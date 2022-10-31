@@ -12,6 +12,9 @@ public class Book {
         this.publication_date = publicationDate;
     }
 
+    public Book() {
+    }
+
     public String getTitle() {
         return title;
     }

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменить карточку читателя</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/people/{id}(id=${person.getPerson_id()})}" th:object="${person}">
+    <label for="name">Имя: </label>
+    <input type="text" th:field="*{name}" id="name">
+    <br>
+    <label for="birthdate">Год рождения: </label>
+    <input type="text" th:field="*{birthdate}" id="birthdate">
+    <br>
+    <input type="submit" value="Обновить">
+</form>
+
+</body>
+</html>
