@@ -16,6 +16,6 @@ public class BookRowMapper implements RowMapper {
                 rs.getInt("publication_year"),
                 rs.getInt("person_id")
                 );
-        return null;
+        return book;
     }
 }
