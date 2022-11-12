@@ -7,7 +7,7 @@
 <body>
 
 <div th:each="person : ${people}">
-    <a th:href="@{people/{id}(id=${person.getPerson_id()})}"
+    <a th:href="@{people/{id}(id=${person.getPersonId()})}"
        th:text="${person.getName() + ', ' + person.getBirthdate()}">Person placeholder</a>
 </div>
 
