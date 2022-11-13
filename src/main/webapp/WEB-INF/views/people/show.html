@@ -9,6 +9,11 @@
 <p th:text="${'id: ' + person.getPersonId()}">Id</p>
 <p th:text="${person.getName()}">Name</p>
 <p th:text="${'Год рождения: ' + person.getBirthdate()}">Birthdate</p>
+<label for="bookList">Книги:</label>
+<ul th:each="book : ${personBooks}" id="bookList">
+    <li><a th:href="@{/books/{id}(id=${book.getBookId()})}"
+        th:text="${book.getTitle()}">Book placeholder</a></li>
+</ul>
 <hr/>
 <a th:href="@{/people/{id}/edit(id=${person.getPersonId()})}">Отредактировать карточку</a>
 <br/>

@@ -20,7 +20,8 @@ public class BookDao {
 
     public List<Book> index() {
         return jdbcTemplate.query(
-                "SELECT * FROM Book", new BookRowMapper());
+                "SELECT * FROM Book",
+                new BookRowMapper());
     }
 
     public void save(Book book) {

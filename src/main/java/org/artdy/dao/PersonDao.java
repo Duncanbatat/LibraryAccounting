@@ -1,11 +1,15 @@
 package org.artdy.dao;
 
+import org.artdy.models.Book;
 import org.artdy.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,14 +25,16 @@ public class PersonDao {
     public List<Person> index() {
         return jdbcTemplate.query(
                 "SELECT * FROM Person",
-                new BeanPropertyRowMapper<>(Person.class));
+                new BeanPropertyRowMapper<>(Person.class)
+        );
     }
 
     public Optional<Person> show(int personId) {
         return jdbcTemplate.query(
                 "SELECT * FROM Person WHERE person_id=?",
                 new Object[]{personId},
-                new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
+                new BeanPropertyRowMapper<>(Person.class)
+        ).stream().findAny();
     }
 
     public void save(Person person) {
@@ -45,6 +51,14 @@ public class PersonDao {
                 person.getName(),
                 person.getBirthdate(),
                 personId
+        );
+    }
+
+    public List<Book> getBooks(int personId) {
+        return jdbcTemplate.query(
+                "SELECT * FROM Person JOIN Book ON Person.person_id = Book.person_id WHERE Person.person_id=? ORDER BY title",
+                new Object[]{personId},
+                new BookRowMapper()
         );
     }
 

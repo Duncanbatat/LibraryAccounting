@@ -13,8 +13,4 @@ public class Book {
     private String authorName;
     private int publicationYear;
     private int personId;
-
-    public boolean isBorrowed() {
-        return personId > 0;
-    }
 }

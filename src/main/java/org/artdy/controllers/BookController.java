@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
@@ -42,9 +45,10 @@ public class BookController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int bookId, Model model) {
         Book book = bookDao.show(bookId).get();
-        Person person = book.isBorrowed() ? personDao.show(book.getPersonId()).get() : null;
+        Person person = personDao.show(book.getPersonId()).orElse(null);
         model.addAttribute("book", book);
         model.addAttribute("person", person);
+        model.addAttribute("people", personDao.index());
         return "/books/show";
     }
 

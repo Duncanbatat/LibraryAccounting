@@ -11,7 +11,9 @@
 <p th:text="${'Год публикации: ' + book.getPublicationYear()}">Publication date</p>
 <br/>
 <p th:if="${person != null}" th:text="${'Книга сейчас у: ' + person.getName()}">Holder</p>
-<p th:if="${person == null}" th:text="${'Эту книгу пока никто не взял!'}">Holder</p>
+<div th:if="${person == null}">
+    <label>Эта книга свободна, кому назначить её?</label>
+</div>
 <hr/>
 <a th:href="@{/books/{id}/edit(id=${book.getBookId()})}">Отредактировать карточку</a>
 <br/>
