@@ -50,6 +50,21 @@ public class BookDao {
         );
     }
 
+    public void updateBookHolder(int bookId, int holderId) {
+        jdbcTemplate.update(
+                "UPDATE Book SET person_id=? WHERE book_id=?",
+                holderId,
+                bookId
+        );
+    }
+
+    public void deleteBookHolder(int bookId) {
+        jdbcTemplate.update(
+                "UPDATE Book SET person_id=null WHERE book_id=?",
+                bookId
+        );
+    }
+
     public void delete(int bookId) {
         jdbcTemplate.update(
                 "DELETE FROM Book WHERE book_id=?",

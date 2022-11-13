@@ -9,11 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
-
 @Controller
 @RequestMapping("/books")
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class BookController {
     private  final PersonDao personDao;
     private final BookDao bookDao;
@@ -45,9 +43,10 @@ public class BookController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int bookId, Model model) {
         Book book = bookDao.show(bookId).get();
-        Person person = personDao.show(book.getPersonId()).orElse(null);
+        Person bookHolder = personDao.show(book.getPersonId()).orElse(null);
         model.addAttribute("book", book);
-        model.addAttribute("person", person);
+        model.addAttribute("bookHolder", bookHolder);
+        model.addAttribute("person", new Person());
         model.addAttribute("people", personDao.index());
         return "/books/show";
     }
@@ -58,10 +57,22 @@ public class BookController {
         return "/books/edit";
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/edit")
     public String update(@PathVariable("id") int bookId, @ModelAttribute("book") Book book) {
         bookDao.update(bookId, book);
         return "redirect:/books";
+    }
+
+    @PatchMapping("/{id}")
+    public String updateBookHolder(@PathVariable("id") int bookId, @ModelAttribute("book") Book book) {
+        bookDao.updateBookHolder(bookId, book.getPersonId());
+        return "redirect:/books/" + bookId;
+    }
+
+    @PatchMapping("/{id}/return")
+    public String returnBook(@PathVariable("id") int bookId) {
+        bookDao.deleteBookHolder(bookId);
+        return "redirect:/books/" + bookId;
     }
 
     @DeleteMapping("/{id}")
