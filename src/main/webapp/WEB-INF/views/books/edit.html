@@ -2,21 +2,21 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Создать карточку книги</title>
+    <title>Изменить карточку книги</title>
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/books}" th:object="${book}">
+<form th:method="PATCH" th:action="@{/books/{id}(id=${book.getBookId()})}" th:object="${book}">
     <label for="title">Название: </label>
     <input type="text" th:field="*{title}" id="title">
     <br>
     <label for="authorName">Имя автора: </label>
     <input type="text" th:field="*{authorName}" id="authorName">
     <br>
-    <label for="publicationYear">Год публикации: </label>
-    <input type="text" th:field="*{publicationYear}" id="publicationYear">
+    <label for="publicationDate">Дата публикации: </label>
+    <input type="text" th:field="*{publicationYear}" id="publicationDate">
     <br>
-    <input type="submit" value="Создать">
+    <input type="submit" value="Обновить">
 </form>
 
 </body>

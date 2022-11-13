@@ -2,17 +2,17 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Карточка читателя</title>
+    <title>Карточка книги</title>
 </head>
 <body>
 
-<p th:text="${'id: ' + person.getPerson_id()}">Id</p>
-<p th:text="${person.getName()}">Name</p>
-<p th:text="${'Год рождения: ' + person.getBirthdate()}">Birthdate</p>
+<p th:text="${'id: ' + book.getBookId()}">Id</p>
+<p th:text="${book.getTitle()} + ' — ' + ${book.getAuthorName()}">Title and author name</p>
+<p th:text="${'Год публикации: ' + book.getPublicationYear()}">Publication date</p>
 <hr/>
-<a th:href="@{/people/{id}/edit(id=${person.getPerson_id()})}">Отредактировать карточку</a>
+<a th:href="@{/books/{id}/edit(id=${book.getBookId()})}">Отредактировать карточку</a>
 <br/>
-<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPerson_id()})}">
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getBookId()})}">
     <input type="submit" value="Удалить карточку"/>
 </form>
 
