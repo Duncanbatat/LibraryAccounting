@@ -9,6 +9,9 @@
 <p th:text="${'id: ' + book.getBookId()}">Id</p>
 <p th:text="${book.getTitle()} + ' — ' + ${book.getAuthorName()}">Title and author name</p>
 <p th:text="${'Год публикации: ' + book.getPublicationYear()}">Publication date</p>
+<br/>
+<p th:if="${person != null}" th:text="${'Книга сейчас у: ' + person.getName()}">Holder</p>
+<p th:if="${person == null}" th:text="${'Эту книгу пока никто не взял!'}">Holder</p>
 <hr/>
 <a th:href="@{/books/{id}/edit(id=${book.getBookId()})}">Отредактировать карточку</a>
 <br/>
