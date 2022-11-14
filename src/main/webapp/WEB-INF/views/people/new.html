@@ -8,10 +8,10 @@
 
 <form th:method="POST" th:action="@{/people}" th:object="${person}">
     <label for="name">Имя: </label>
-    <input type="text" th:field="*{name}" id="name">
+    <input type="text" th:field="*{fullName}" id="name">
     <br>
     <label for="birthdate">Год рождения: </label>
-    <input type="text" th:field="*{birthdate}" id="birthdate">
+    <input type="text" th:field="*{yearOfBirth}" id="birthdate">
     <br>
     <input type="submit" value="Создать">
 </form>

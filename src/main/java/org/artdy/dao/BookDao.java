@@ -1,15 +1,16 @@
 package org.artdy.dao;
 
 import org.artdy.models.Book;
+import org.artdy.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
-@SuppressWarnings("deprecation")
 @Component
+@SuppressWarnings("deprecation")
 public class BookDao {
     JdbcTemplate jdbcTemplate;
 
@@ -21,46 +22,54 @@ public class BookDao {
     public List<Book> index() {
         return jdbcTemplate.query(
                 "SELECT * FROM Book",
-                new BookRowMapper());
+                new BeanPropertyRowMapper<>(Book.class));
     }
 
     public void save(Book book) {
         jdbcTemplate.update(
-                "INSERT INTO Book(title, author_name, publication_year) VALUES (?, ?, ?)",
+                "INSERT INTO Book(title, author, year) VALUES (?, ?, ?)",
                 book.getTitle(),
-                book.getAuthorName(),
-                book.getPublicationYear()
+                book.getAuthor(),
+                book.getYear()
         );
     }
 
-    public Optional<Book> show(int bookId) {
+    public Book show(int id) {
         return jdbcTemplate.query(
-                "SELECT * FROM Book WHERE book_id=?",
-                new Object[]{bookId},
-                new BookRowMapper()).stream().findAny();
+                "SELECT * FROM Book WHERE id=?",
+                new Object[]{id},
+                new BeanPropertyRowMapper<>(Book.class)).stream().findAny().orElse(null);
     }
 
-    public void update(int bookId, Book book) {
+    public void update(int id, Book book) {
          jdbcTemplate.update(
-                "UPDATE Book SET title=?, author_name=?, publication_year=? WHERE book_id=?",
+                "UPDATE Book SET title=?, author_name=?, publication_year=? WHERE id=?",
                 book.getTitle(),
-                book.getAuthorName(),
-                book.getPublicationYear(),
-                bookId
+                book.getAuthor(),
+                book.getYear(),
+                id
         );
     }
 
-    public void updateBookHolder(int bookId, int holderId) {
+    public Person getBookOwner(int id) {
+        return jdbcTemplate.query(
+                "SELECT Person.* FROM Book JOIN Person ON Book.person_id = Person.id WHERE Book.id=?",
+                new Object[]{id},
+                new BeanPropertyRowMapper<>(Person.class)
+        ).stream().findAny().orElse(null);
+    }
+
+    public void assignOwner(int id, int personId) {
         jdbcTemplate.update(
-                "UPDATE Book SET person_id=? WHERE book_id=?",
-                holderId,
-                bookId
+                "UPDATE Book SET person_id=? WHERE id=?",
+                personId,
+                id
         );
     }
 
-    public void deleteBookHolder(int bookId) {
+    public void releaseBook(int bookId) {
         jdbcTemplate.update(
-                "UPDATE Book SET person_id=null WHERE book_id=?",
+                "UPDATE Book SET person_id = NULL WHERE id=?",
                 bookId
         );
     }

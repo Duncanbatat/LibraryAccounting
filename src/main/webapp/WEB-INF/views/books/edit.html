@@ -6,15 +6,15 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/books/{id}/edit(id=${book.getBookId()})}" th:object="${book}">
+<form th:method="PATCH" th:action="@{/books/{id}/edit(id=${book.getId()})}" th:object="${book}">
     <label for="title">Название: </label>
     <input type="text" th:field="*{title}" id="title">
     <br>
     <label for="authorName">Имя автора: </label>
-    <input type="text" th:field="*{authorName}" id="authorName">
+    <input type="text" th:field="*{getAuthor}" id="authorName">
     <br>
     <label for="publicationDate">Дата публикации: </label>
-    <input type="text" th:field="*{publicationYear}" id="publicationDate">
+    <input type="text" th:field="*{getYear}" id="publicationDate">
     <br>
     <input type="submit" value="Обновить">
 </form>

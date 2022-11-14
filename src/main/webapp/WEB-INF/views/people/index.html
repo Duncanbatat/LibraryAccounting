@@ -5,10 +5,13 @@
     <title>Все читатели</title>
 </head>
 <body>
-
-<div th:each="person : ${people}">
-    <a th:href="@{people/{id}(id=${person.getPersonId()})}"
-       th:text="${person.getName() + ', ' + person.getBirthdate()}">Person placeholder</a>
+<a th:href="@{index.jsp}">Назад к общему списку</a>
+<br/>
+<br/>
+<label for="people"><h3>Читатели:</h3></label>
+<div th:each="person : ${people}" id="people">
+    <a th:href="@{people/{id}(id=${person.getId()})}"
+       th:text="${person.getFullName() + ', ' + person.getYearOfBirth()}">Person placeholder</a>
 </div>
 
 <br/>

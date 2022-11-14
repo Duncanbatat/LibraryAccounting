@@ -1,6 +1,5 @@
 package org.artdy.controllers;
 
-import org.artdy.dao.BookDao;
 import org.artdy.dao.PersonDao;
 import org.artdy.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/people")
 public class PeopleController {
     private final PersonDao personDao;
-    private final BookDao bookDao;
 
     @Autowired
-    public PeopleController(PersonDao personDao, BookDao bookDao) {
+    public PeopleController(PersonDao personDao) {
         this.personDao = personDao;
-        this.bookDao = bookDao;
     }
 
     @GetMapping
@@ -28,7 +25,7 @@ public class PeopleController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int personId, Model model) {
-        model.addAttribute("person", personDao.show(personId).get());
+        model.addAttribute("person", personDao.show(personId));
         model.addAttribute("personBooks", personDao.getBooks(personId));
         return "/people/show";
     }
@@ -47,7 +44,7 @@ public class PeopleController {
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int person_id, Model model) {
-        model.addAttribute("person", personDao.show(person_id).get());
+        model.addAttribute("person", personDao.show(person_id));
         return "/people/edit";
     }
 

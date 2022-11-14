@@ -6,19 +6,22 @@
 </head>
 <body>
 
-<p th:text="${'id: ' + person.getPersonId()}">Id</p>
-<p th:text="${person.getName()}">Name</p>
-<p th:text="${'Год рождения: ' + person.getBirthdate()}">Birthdate</p>
+<p th:text="${'id: ' + person.getId()}">Id</p>
+<p th:text="${person.getFullName()}">Name</p>
+<p th:text="${'Год рождения: ' + person.getYearOfBirth()}">Birthdate</p>
 <label for="bookList">Книги:</label>
 <ul th:each="book : ${personBooks}" id="bookList">
-    <li><a th:href="@{/books/{id}(id=${book.getBookId()})}"
+    <li><a th:href="@{/books/{id}(id=${book.getId()})}"
         th:text="${book.getTitle()}">Book placeholder</a></li>
 </ul>
 <hr/>
-<a th:href="@{/people/{id}/edit(id=${person.getPersonId()})}">Отредактировать карточку</a>
+
+<form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getId()})}">
+    <input type="submit" value="Редактировать"/>
+</form>
 <br/>
-<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPersonId()})}">
-    <input type="submit" value="Удалить карточку"/>
+<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
+    <input type="submit" value="Удалить"/>
 </form>
 
 </body>
