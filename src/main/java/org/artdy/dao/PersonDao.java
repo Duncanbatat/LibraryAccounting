@@ -2,35 +2,37 @@ package org.artdy.dao;
 
 import org.artdy.models.Book;
 import org.artdy.models.Person;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
 public class PersonDao {
-    JdbcTemplate jdbcTemplate;
+    private final SessionFactory sessionFactory;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public PersonDao(JdbcTemplate jdbcTemplate) {
+    public PersonDao(SessionFactory sessionFactory, JdbcTemplate jdbcTemplate) {
+        this.sessionFactory = sessionFactory;
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Transactional(readOnly = true)
     public List<Person> index() {
-        return jdbcTemplate.query(
-                "SELECT * FROM Person",
-                new BeanPropertyRowMapper<>(Person.class)
-        );
+        Session currentSession = sessionFactory.getCurrentSession();
+        return currentSession.createQuery("SELECT p FROM Person p", Person.class).getResultList();
     }
 
+    @Transactional(readOnly = true)
     public Person show(int id) {
-        return jdbcTemplate.query(
-                "SELECT * FROM Person WHERE id=?",
-                new Object[]{id},
-                new BeanPropertyRowMapper<>(Person.class)
-        ).stream().findAny().orElse(null);
+        Session currentSession = sessionFactory.getCurrentSession();
+        return currentSession.get(Person.class, id);
     }
 
     public void save(Person person) {

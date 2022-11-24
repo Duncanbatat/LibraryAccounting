@@ -2,55 +2,56 @@ package org.artdy.dao;
 
 import org.artdy.models.Book;
 import org.artdy.models.Person;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
 @SuppressWarnings("deprecation")
 public class BookDao {
-    JdbcTemplate jdbcTemplate;
+    private final SessionFactory sessionFactory;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public BookDao(JdbcTemplate jdbcTemplate) {
+    public BookDao(SessionFactory sessionFactory, JdbcTemplate jdbcTemplate) {
+        this.sessionFactory = sessionFactory;
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Transactional(readOnly = true)
     public List<Book> index() {
-        return jdbcTemplate.query(
-                "SELECT * FROM Book",
-                new BeanPropertyRowMapper<>(Book.class));
+        Session currentSession = sessionFactory.getCurrentSession();
+        return currentSession.createQuery("SELECT b FROM Book b", Book.class).getResultList();
     }
 
+    @Transactional
     public void save(Book book) {
-        jdbcTemplate.update(
-                "INSERT INTO Book(title, author, year) VALUES (?, ?, ?)",
-                book.getTitle(),
-                book.getAuthor(),
-                book.getYear()
-        );
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.save(book);
     }
 
+    @Transactional(readOnly = true)
     public Book show(int id) {
-        return jdbcTemplate.query(
-                "SELECT * FROM Book WHERE id=?",
-                new Object[]{id},
-                new BeanPropertyRowMapper<>(Book.class)).stream().findAny().orElse(null);
+        Session currentSession = sessionFactory.getCurrentSession();
+        return currentSession.get(Book.class, id);
     }
 
-    public void update(int id, Book book) {
-         jdbcTemplate.update(
-                "UPDATE Book SET title=?, author_name=?, publication_year=? WHERE id=?",
-                book.getTitle(),
-                book.getAuthor(),
-                book.getYear(),
-                id
-        );
+    @Transactional
+    public void update(int id, Book updatedBook) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        Book bookToBeUpdated = currentSession.get(Book.class, id);
+        bookToBeUpdated.setTitle(updatedBook.getTitle());
+        bookToBeUpdated.setAuthor(updatedBook.getAuthor());
+        bookToBeUpdated.setYear(updatedBook.getYear());
     }
 
+    @Transactional(readOnly = true)
     public Person getBookOwner(int id) {
         return jdbcTemplate.query(
                 "SELECT Person.* FROM Book JOIN Person ON Book.person_id = Person.id WHERE Book.id=?",
