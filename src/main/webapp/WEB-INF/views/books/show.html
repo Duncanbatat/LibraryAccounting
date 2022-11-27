@@ -13,7 +13,7 @@
 <br/>
 <div th:if="${bookOwner != null}">
     <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
-        <p th:text="${'Книга сейчас у: ' + bookOwner.getFullName()}">Holder</p>
+        <p th:text="${'Книга сейчас у: ' + bookOwner.getFullName()}">Owner</p>
         <input type="submit" value="Освободить">
     </form>
 </div>

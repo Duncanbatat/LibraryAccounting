@@ -8,10 +8,10 @@
 <a th:href="@{index.jsp}">Назад к общему списку</a>
 <br/>
 <br/>
-<label for="people"><h3>Читатели:</h3></label>
+<h3><label for="people">Читатели:</label></h3>
 <div th:each="person : ${people}" id="people">
     <a th:href="@{people/{id}(id=${person.getId()})}"
-       th:text="${person.getFullName() + ', ' + person.getYearOfBirth()}">Person placeholder</a>
+       th:text="${person.getFullName() + ', ' + person.getYearOfBirth()}">Person</a>
 </div>
 
 <br/>

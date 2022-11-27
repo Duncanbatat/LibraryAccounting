@@ -3,6 +3,8 @@ package org.artdy.models;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Data
 @Entity
@@ -24,9 +26,22 @@ public class Book {
     @Column(name = "year")
     private int year;
 
+    @Transient
+    private boolean expired;
+
+    @Column(name = "taken_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date takenAt;
+
+    //TODO Сделать ленивую подгрузку
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person owner;
+
+    public String getFormattedTakenAt() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        return sdf.format(takenAt);
+    }
 
     @Override
     public String toString() {

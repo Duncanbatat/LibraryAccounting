@@ -8,12 +8,17 @@
 
 <p th:text="${'id: ' + person.getId()}">Id</p>
 <p th:text="${person.getFullName()}">Name</p>
-<p th:text="${'Год рождения: ' + person.getYearOfBirth()}">Birthdate</p>
-<label for="bookList">Книги:</label>
-<ul th:each="book : ${personBooks}" id="bookList">
-    <li><a th:href="@{/books/{id}(id=${book.getId()})}"
-        th:text="${book.getTitle()}">Book placeholder</a></li>
-</ul>
+<p th:text="${'Дата рождения: ' + person.getFormattedDateOfBirth()}">Birthdate</p>
+<div th:if="${personBooks == null || personBooks.isEmpty()}">
+    <p>Не взято ни одной книги.</p>
+</div>
+<div th:if="${!personBooks.isEmpty()}">
+    <label for="bookList">Книги:</label>
+    <ul th:each="book : ${personBooks}" id="bookList">
+        <li><a th:href="@{/books/{id}(id=${book.getId()})}"
+               th:text="${book.getTitle() + ' (взята: ' + book.getFormattedTakenAt() + ')'}">Book title</a></li>
+    </ul>
+</div>
 <hr/>
 
 <form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getId()})}">

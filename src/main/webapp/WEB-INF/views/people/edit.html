@@ -10,8 +10,9 @@
     <label for="name">Имя: </label>
     <input type="text" th:field="*{fullName}" id="name">
     <br>
-    <label for="birthdate">Год рождения: </label>
-    <input type="text" th:field="*{yearOfBirth}" id="birthdate">
+    <label for="birthdate">Дата рождения: </label>
+<!--    Что происходит??-->
+    <input type="text" th:field="*{dateOfBirth}" th:value="${person.getFormattedDateOfBirth()}" id="birthdate">
     <br>
     <input type="submit" value="Обновить">
 </form>
