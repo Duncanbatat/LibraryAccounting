@@ -13,12 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
-public class PersonDao {
+@SuppressWarnings({"unused", "deprecation"})
+public class PersonDAO {
     private final SessionFactory sessionFactory;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public PersonDao(SessionFactory sessionFactory, JdbcTemplate jdbcTemplate) {
+    public PersonDAO(SessionFactory sessionFactory, JdbcTemplate jdbcTemplate) {
         this.sessionFactory = sessionFactory;
         this.jdbcTemplate = jdbcTemplate;
     }

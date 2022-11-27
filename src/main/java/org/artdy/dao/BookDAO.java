@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
-@SuppressWarnings("deprecation")
-public class BookDao {
+@SuppressWarnings({"deprecation", "unused"})
+public class BookDAO {
     private final SessionFactory sessionFactory;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public BookDao(SessionFactory sessionFactory, JdbcTemplate jdbcTemplate) {
+    public BookDAO(SessionFactory sessionFactory, JdbcTemplate jdbcTemplate) {
         this.sessionFactory = sessionFactory;
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -77,7 +77,7 @@ public class BookDao {
 
     public void delete(int bookId) {
         jdbcTemplate.update(
-                "DELETE FROM Book WHERE book_id=?",
+                "DELETE FROM Book WHERE id=?",
                 bookId
         );
     }
