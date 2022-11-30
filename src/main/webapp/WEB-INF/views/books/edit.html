@@ -9,12 +9,18 @@
 <form th:method="PATCH" th:action="@{/books/{id}/edit(id=${book.getId()})}" th:object="${book}">
     <label for="title">Название: </label>
     <input type="text" th:field="*{title}" id="title">
+    <div style="color: red" th:if="${#fields.hasErrors('title')}"
+         th:errors="*{title}">Title error</div>
     <br>
     <label for="author">Имя автора: </label>
     <input type="text" th:field="*{author}" id="author">
+    <div style="color: red" th:if="${#fields.hasErrors('author')}"
+         th:errors="*{author}">Author error</div>
     <br>
-    <label for="year">Дата публикации: </label>
+    <label for="year">Год публикации: </label>
     <input type="text" th:field="*{year}" id="year">
+    <div style="color: red" th:if="${#fields.hasErrors('year')}"
+         th:errors="*{year}">Year error</div>
     <br>
     <input type="submit" value="Обновить">
 </form>

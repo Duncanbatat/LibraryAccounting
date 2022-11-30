@@ -7,7 +7,10 @@ import org.artdy.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/books")
@@ -35,7 +38,10 @@ public class BookController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute("book") Book book) {
+    public String create(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/books/new";
+        }
         bookService.save(book);
         return "redirect:/books";
     }
@@ -58,7 +64,11 @@ public class BookController {
     }
 
     @PatchMapping("/{id}/edit")
-    public String update(@PathVariable("id") int id, @ModelAttribute("book") Book book) {
+    public String update(@PathVariable("id") int id,
+                         @ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/books/edit";
+        }
         bookService.update(id, book);
         return "redirect:/books";
     }

@@ -34,6 +34,10 @@ public class PeopleService {
         return null;
     }
 
+    public Optional<Person> getPersonByFullName(String fullName) {
+        return peopleRepository.getPersonByFullName(fullName);
+    }
+
     //TODO Реализовать метод проверки истечения срока
 //    public List<Book> getBooksByPersonId(int id) {
 //        Optional<Person> person = peopleRepository.findById(id);
